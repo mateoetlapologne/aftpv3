@@ -10,41 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo = $_POST["pseudo"];
     $infos = $_POST["infos"];
 
-    // Vérification des extensions des fichiers uploadés
-    $extensionsImages = array("jpg", "jpeg", "png");
-
-    $erreur = false;
-
-    // Vérification des extensions des images
-    $imageExtension = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
-    if (!in_array($imageExtension, $extensionsImages)) {
-        $erreur = true;
-        echo "L'extension de l'image n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
-    }
-
-    // Vérification des extensions des preuves
-    $extensionsPreuves = array();
-    foreach ($_FILES["preuve"]["tmp_name"] as $key => $tmp_name) {
-        $extension = strtolower(pathinfo($_FILES["preuve"]["name"][$key], PATHINFO_EXTENSION));
-        if (!empty($_FILES["preuve"]["name"][$key]) && !in_array($extension, $extensionsImages)) {
-            $erreur = true;
-            echo "L'extension de la preuve " . ($key + 1) . " n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
-        }
-        $extensionsPreuves[$key] = $extension;
-    }
-
     // Vérification des champs de texte
     if (!empty($nom) && !preg_match("/^[a-zA-ZÀ-ÿ\s-]+$/", $nom)) {
         $erreur = true;
         echo "Le nom ne doit contenir que des lettres, des espaces et des tirets.";
-    }
-
-    if (empty($age)) {
-        $age = 999;
-    }
-
-    if (empty($nomPhotoVictime)) {
-        $nomPhotoVictime = "default.jpg";
     }
 
     if (!preg_match("/^[a-zA-ZÀ-ÿ\s-]+$/", $prenom)) {
@@ -144,20 +113,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="text">
             Affiche ton Pédo
         </div>
-        <form action="#" class="">
+        <form action="#" class="" method="post">
             <div class="form-row">
                 <div class="input-data">
                     <div class="underline"></div>
                     <label for="">Photo du pédophile*</label>
                     <br><br>
-                    <input type="file" name="image" required>
+                    <input type="file" name="image" accept="image/jpeg, image/png, image/jpg" required>
+
 
                 </div>
                 <div class="input-data">
                     <div class="underline"></div>
                     <label for="">Preuve(s)*</label>
                     <br><br>
-                    <input type="file" name="preuve[]" multiple required>
+                    <input type="file" name="preuve[]" accept="image/jpeg, image/png, image/jpg" multiple required>
 
                 </div>
             </div>
@@ -192,21 +162,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="">Adresse</label>
                 </div>
                 <div class="input-data">
-                    <input type="phone" name="numero" required>
+                    <input type="phone" name="numero" id="numero" required>
                     <div class="underline"></div>
                     <label for="">Numéro de téléphone du pedo</label>
                 </div>
             </div>
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="pseudo" required>
+                    <input type="text" name="pseudo" id="pseudo" required>
                     <div class="underline"></div>
                     <label for="">Pseudo*</label>
                 </div>
             </div>
             <div class="form-row">
                 <div class="input-data textarea">
-                    <textarea rows="8" cols="80" name="infos" required></textarea>
+                    <textarea rows="8" cols="80" name="infos" id="infos" required></textarea>
                     <br />
                     <div class="underline"></div>
                     <label for="">Informations</label>
