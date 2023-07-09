@@ -10,29 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo = $_POST["pseudo"];
     $infos = $_POST["infos"];
 
-     // Vérification des extensions des fichiers uploadés
-     $extensionsImages = array("jpg", "jpeg", "png");
-
-     $erreur = false;
- 
-     // Vérification des extensions des images
-     $imageExtension = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
-     if (!in_array($imageExtension, $extensionsImages)) {
-         $erreur = true;
-         echo "L'extension de l'image n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
-     }
- 
-     // Vérification des extensions des preuves
-     $extensionsPreuves = array();
-     foreach ($_FILES["preuve"]["tmp_name"] as $key => $tmp_name) {
-         $extension = strtolower(pathinfo($_FILES["preuve"]["name"][$key], PATHINFO_EXTENSION));
-         if (!empty($_FILES["preuve"]["name"][$key]) && !in_array($extension, $extensionsImages)) {
-             $erreur = true;
-             echo "L'extension de la preuve " . ($key + 1) . " n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
-         }
-         $extensionsPreuves[$key] = $extension;
-     }
-
+    
 
     // Vérification des champs de texte
     if (!empty($nom) && !preg_match("/^[a-zA-ZÀ-ÿ\s-]+$/", $nom)) {
@@ -145,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="text">
             Affiche ton Pédo
         </div>
-        <form action="#" class="" method="post">
+        <form action="#" class="" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="input-data">
                     <div class="underline"></div>
