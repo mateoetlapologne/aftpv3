@@ -10,10 +10,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo = $_POST["pseudo"];
     $infos = $_POST["infos"];
 
+     // Vérification des extensions des fichiers uploadés
+     $extensionsImages = array("jpg", "jpeg", "png");
+
+     $erreur = false;
+ 
+     // Vérification des extensions des images
+     $imageExtension = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
+     if (!in_array($imageExtension, $extensionsImages)) {
+         $erreur = true;
+         echo "L'extension de l'image n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
+     }
+ 
+     // Vérification des extensions des preuves
+     $extensionsPreuves = array();
+     foreach ($_FILES["preuve"]["tmp_name"] as $key => $tmp_name) {
+         $extension = strtolower(pathinfo($_FILES["preuve"]["name"][$key], PATHINFO_EXTENSION));
+         if (!empty($_FILES["preuve"]["name"][$key]) && !in_array($extension, $extensionsImages)) {
+             $erreur = true;
+             echo "L'extension de la preuve " . ($key + 1) . " n'est pas valide. Les extensions autorisées sont : " . implode(", ", $extensionsImages);
+         }
+         $extensionsPreuves[$key] = $extension;
+     }
+
+
     // Vérification des champs de texte
     if (!empty($nom) && !preg_match("/^[a-zA-ZÀ-ÿ\s-]+$/", $nom)) {
         $erreur = true;
         echo "Le nom ne doit contenir que des lettres, des espaces et des tirets.";
+    }
+
+    if (empty($age)) {
+        $age = 999;
+    }
+
+    if(empty($nomPhotoVictime)) {
+        $nomPhotoVictime = "default.jpg";
     }
 
     if (!preg_match("/^[a-zA-ZÀ-ÿ\s-]+$/", $prenom)) {
@@ -30,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $erreur = true;
         echo "Le numéro de téléphone doit comporter 10 chiffres.";
     }
-
+    
 
     if (!preg_match("/^[a-zA-Z0-9À-ÿ\s-]+$/", $pseudo)) {
         $erreur = true;
@@ -58,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Déplacement de l'image de la victime vers le dossier de destination
         $dossierDestination = 'image/';
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $dossierDestination . $nomPhotoVictime)) {
-
+            
             echo "L'image a été téléchargée avec succès.";
         } else {
             echo "Erreur lors du téléchargement de l'image : " . $_FILES["image"]["error"];
@@ -133,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="nom" required>
+                    <input type="text" name="nom">
                     <div class="underline"></div>
                     <label for="">Nom</label>
                 </div>
@@ -150,19 +182,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="">Âge</label>
                 </div>
                 <div class="input-data">
-                    <input type="text" name="ville" required>
+                    <input type="text" name="ville">
                     <div class="underline"></div>
                     <label for="">Ville</label>
                 </div>
             </div>
             <div class="form-row">
                 <div class="input-data">
-                    <input type="text" name="adresse" required>
+                    <input type="text" name="adresse">
                     <div class="underline"></div>
                     <label for="">Adresse</label>
                 </div>
                 <div class="input-data">
-                    <input type="phone" name="numero" id="numero" required>
+                    <input type="phone" name="numero" id="numero">
                     <div class="underline"></div>
                     <label for="">Numéro de téléphone du pedo</label>
                 </div>
@@ -176,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-row">
                 <div class="input-data textarea">
-                    <textarea rows="8" cols="80" name="infos" id="infos" required></textarea>
+                    <textarea rows="8" cols="80" name="infos" id="infos"></textarea>
                     <br />
                     <div class="underline"></div>
                     <label for="">Informations</label>
