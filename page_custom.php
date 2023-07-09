@@ -57,17 +57,17 @@
     <?php
         echo '<div class="post">';
         echo '<a class="caption ">TETE DU PEDO</a>';
-        echo '<a href="https://www.aftp.fr/aftp/image/' . $photoVictime . '"><button class="rounded-button">Voir</button></a>';
+        echo '<a href="https://www.aftp.online/image/' . $photoVictime . '"><button class="rounded-button">Voir</button></a>';
         echo '<div class="caption">PREUVE(S)</div>';
         echo '<a class="caption">Preuve 1</a>';
-        echo '<a href="https://www.aftp.fr/aftp/image/' . $preuve1 . '"><button class="rounded-button">Voir</button></a>';
+        echo '<a href="https://www.aftp.online/image/' . $preuve1 . '"><button class="rounded-button">Voir</button></a>';
         if (!empty($preuve2)){
             echo '<a class="caption">Preuve 2</a>';
-            echo '<a href="https://www.aftp.fr/aftp/image/' . $preuve2 . '"><button class="rounded-button">Voir</button></a>';
+            echo '<a href="https://www.aftp.online/image/' . $preuve2 . '"><button class="rounded-button">Voir</button></a>';
         }
         if (!empty($preuve3)){
             echo '<a class="caption">Preuve 3</a>';
-            echo '<a href="https://www.aftp.fr/aftp/image/' . $preuve3 . '"><button class="rounded-button">Voir</button></a>';
+            echo '<a href="https://www.aftp.online/image/' . $preuve3 . '"><button class="rounded-button">Voir</button></a>';
         }
         echo '<div class="caption">Prénom = ' . $prenom . '</div>';
         if (!empty($nom)){
